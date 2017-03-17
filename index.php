@@ -37,9 +37,9 @@
             </tr>
         <?php } ?>
         </table>
-        <form action="#">
-            <input type="text" name=""/>
-            <textarea rows="5"></textarea>
+        <form action="add.php" method="post">
+            <input type="text" name="student"/>
+            <textarea rows="5" name="question"></textarea>
             <input type="submit" value="Отправить"/>
         </form>
     </body>
