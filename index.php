@@ -7,40 +7,37 @@
     </head>
     <body>
         <h1>Список студентов</h1>
-        <?php
-            mysql_connect("localhost", "natela", "123") or die("Ошибка соединения: " . mysql_error());
-            mysql_select_db("students");
-            mysql_query("set names 'utf8';");
-            $result = mysql_query(
-            "select 
-                students.stud_group, 
-                students.name, 
-                students.github
-             from students 
-             left outer join students_tasks on students_tasks.student_id = students.id
-             left outer join tasks on students_tasks.task_id = tasks.id
-             left outer join students_labs on students_labs.student_id = students.id
-             left outer join labs on students_labs.lab_id = labs.id
-             order by 1, 2;");
-        ?>
         <table>
-            <tr>
-                <th>Группа</th>
-                <th>ФИО</th>
-                <th>Репозиторий</th>
-            </tr>
-        <?php while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) { ?>
-            <tr>
+          <tr>
+            <th>Группа</th>
+            <th>Имя</th>
+            <th>Репозиторий</th>
+          </tr>
+          <?php
+            mysql_connect("localhost", "natela", "123");
+            mysql_select_db("students1");
+            mysql_query("set names 'utf8';");
+            $sql = "select name, stud_group, github
+                    from students order by 2, 1";
+            $result = mysql_query($sql);
+            while($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+          ?>
+              <tr>
                 <td><?php echo $row["stud_group"]; ?></td>
-                <td><?php echo $row["name"]; ?></td>
-                <td><a href="<?php echo $row["github"]; ?>" target="_blank"><?php echo $row["github"]; ?></a></td>
-            </tr>
-        <?php } ?>
+                <td><?=$row["name"] ?></td>
+                <td>
+                  <a href="<?= $row["github"]; ?>" target="_blank">
+                    <?= $row["github"]; ?>
+                  </a>
+                </td>
+              </tr>
+            <?php }?>
         </table>
         <form action="add.php" method="post">
-            <input type="text" name="student"/>
-            <textarea rows="5" name="question"></textarea>
-            <input type="submit" value="Отправить"/>
+          <input type="text" name="name"/>
+          <input type="text" name="stud_group"/>
+          <input type="text" name="github"/>
+          <input type="submit">
         </form>
     </body>
 </html>
